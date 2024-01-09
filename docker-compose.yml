@@ -26,11 +26,11 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.chirpstack-application-server.entrypoints=web"
-        - "traefik.http.routers.chirpstack-application-server.rule=Host(`chirpstack.uat.ding.hu`)"
+        - "traefik.http.routers.chirpstack-application-server.rule=Host(`chirpstack.uat.ding.hu`) || Host(`chirpstack.smartcitycore.io`)"
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
         - "traefik.http.routers.chirpstack-application-server.middlewares=redirect-to-https"
         - "traefik.http.routers.chirpstack-application-server-secure.entrypoints=websecure"
-        - "traefik.http.routers.chirpstack-application-server-secure.rule=Host(`chirpstack.uat.ding.hu`)"
+        - "traefik.http.routers.chirpstack-application-server-secure.rule=Host(`chirpstack.uat.ding.hu` || Host(`chirpstack.smartcitycore.io`)"
         - "traefik.http.routers.chirpstack-application-server-secure.tls=true"
         - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-application-server-secure.service=chirpstack-application-server"
@@ -55,19 +55,24 @@ services:
     image: chirpstack/chirpstack-rest-api:4
     restart: unless-stopped
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.chirpstack-rest-api.entrypoints=web"
-      - "traefik.http.routers.chirpstack-rest-api.rule=Host(`chirpstack-api.uat.ding.hu`)"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.chirpstack-rest-api.middlewares=redirect-to-https"
-      - "traefik.http.routers.chirpstack-rest-api-secure.entrypoints=websecure"
-      - "traefik.http.routers.chirpstack-rest-api-secure.rule=Host(`chirpstack-api.uat.ding.hu`)"
-      - "traefik.http.routers.chirpstack-rest-api-secure.tls=true"
-      - "traefik.http.routers.chirpstack-rest-api-secure.tls.certresolver=le"
-      - "traefik.http.routers.chirpstack-rest-api-secure.service=chirpstack-rest-api"
-      - "traefik.http.services.chirpstack-rest-api.loadbalancer.server.port=8080"
-      - "traefik.docker.network=gateway-network"
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 5s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.chirpstack-rest-api.entrypoints=web"
+        - "traefik.http.routers.chirpstack-rest-api.rule=Host(`chirpstack-api.uat.ding.hu`) || Host(`chirpstack-api.smartcitycore.io`)"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.chirpstack-rest-api.middlewares=redirect-to-https"
+        - "traefik.http.routers.chirpstack-rest-api-secure.entrypoints=websecure"
+        - "traefik.http.routers.chirpstack-rest-api-secure.rule=Host(`chirpstack-api.uat.ding.hu`) || Host(`chirpstack-api.smartcitycore.io`)"
+        - "traefik.http.routers.chirpstack-rest-api-secure.tls=true"
+        - "traefik.http.routers.chirpstack-rest-api-secure.tls.certresolver=le"
+        - "traefik.http.routers.chirpstack-rest-api-secure.service=chirpstack-rest-api"
+        - "traefik.http.services.chirpstack-rest-api.loadbalancer.server.port=8090"
+        - "traefik.docker.network=gateway-network"
     depends_on:
       - chirpstack
     networks:
