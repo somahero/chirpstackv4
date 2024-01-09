@@ -4,7 +4,6 @@ services:
   chirpstack:
     image: chirpstack/chirpstack:4
     command: -c /etc/chirpstack
-    restart: unless-stopped
     volumes:
       - ./configuration/chirpstack:/etc/chirpstack
     depends_on:
@@ -40,7 +39,6 @@ services:
 
   chirpstack-gateway-bridge:
     image: chirpstack/chirpstack-gateway-bridge:4
-    restart: unless-stopped
     networks:
       - chirpstack-network
     ports:
@@ -52,7 +50,6 @@ services:
 
   chirpstack-rest-api:
     image: chirpstack/chirpstack-rest-api:4
-    restart: unless-stopped
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
     deploy:
       replicas: 1
@@ -80,7 +77,6 @@ services:
 
   postgres:
     image: postgres:14-alpine
-    restart: unless-stopped
     volumes:
       - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
@@ -96,7 +92,6 @@ services:
 
   redis:
     image: redis:7-alpine
-    restart: unless-stopped
     volumes:
       - chirpstack-redis:/data
     networks:
@@ -109,7 +104,6 @@ services:
 
   mosquitto:
     image: eclipse-mosquitto:2
-    restart: unless-stopped
     volumes: 
       - ./configuration/mosquitto/config/:/mosquitto/config/
     networks:
