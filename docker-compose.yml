@@ -15,22 +15,29 @@ services:
       - MQTT_BROKER_HOST=mosquitto
       - REDIS_HOST=redis
       - POSTGRESQL_HOST=postgres
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.chirpstack-application-server.entrypoints=web"
-      - "traefik.http.routers.chirpstack-application-server.rule=Host(`chirpstack.uat.ding.hu`)"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.chirpstack-application-server.middlewares=redirect-to-https"
-      - "traefik.http.routers.chirpstack-application-server-secure.entrypoints=websecure"
-      - "traefik.http.routers.chirpstack-application-server-secure.rule=Host(`chirpstack.uat.ding.hu`)"
-      - "traefik.http.routers.chirpstack-application-server-secure.tls=true"
-      - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=le"
-      - "traefik.http.routers.chirpstack-application-server-secure.service=chirpstack-application-server"
-      - "traefik.http.services.chirpstack-application-server.loadbalancer.server.port=8080"
-      - "traefik.docker.network=gateway-network"
     networks:
       - gateway-network
       - chirpstack-network
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.chirpstack-application-server.entrypoints=web"
+        - "traefik.http.routers.chirpstack-application-server.rule=Host(`chirpstack.uat.ding.hu`)"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.chirpstack-application-server.middlewares=redirect-to-https"
+        - "traefik.http.routers.chirpstack-application-server-secure.entrypoints=websecure"
+        - "traefik.http.routers.chirpstack-application-server-secure.rule=Host(`chirpstack.uat.ding.hu`)"
+        - "traefik.http.routers.chirpstack-application-server-secure.tls=true"
+        - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=le"
+        - "traefik.http.routers.chirpstack-application-server-secure.service=chirpstack-application-server"
+        - "traefik.http.services.chirpstack-application-server.loadbalancer.server.port=8080"
+        - "traefik.docker.network=gateway-network"
+
 
   chirpstack-gateway-bridge-basicstation:
     image: chirpstack/chirpstack-gateway-bridge:4
