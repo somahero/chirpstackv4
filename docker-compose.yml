@@ -86,11 +86,6 @@ services:
       - POSTGRES_PASSWORD=root
     networks:
       - chirpstack-network
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 5s
 
   redis:
     image: redis:7-alpine
@@ -98,11 +93,7 @@ services:
       - chirpstack-redis:/data
     networks:
       - chirpstack-network
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 5s
+
 
   mosquitto:
     image: eclipse-mosquitto:2
@@ -113,7 +104,7 @@ services:
 
 volumes:
   postgresqldata:
-   chirpstack-redis:
+  chirpstack-redis:
 
 networks:
   gateway-network:
