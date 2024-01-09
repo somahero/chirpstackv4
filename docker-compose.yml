@@ -93,9 +93,14 @@ services:
     image: redis:7-alpine
     restart: unless-stopped
     volumes:
-      - redisdata:/data
+      - chirpstack-redis:/data
     networks:
       - chirpstack-network
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 5s
 
   mosquitto:
     image: eclipse-mosquitto:2
@@ -107,7 +112,7 @@ services:
 
 volumes:
   postgresqldata:
-  redisdata:
+   chirpstack-redis:
 
 networks:
   gateway-network:
