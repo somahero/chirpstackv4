@@ -88,6 +88,11 @@ services:
       - POSTGRES_PASSWORD=root
     networks:
       - chirpstack-network
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 5s
 
   redis:
     image: redis:7-alpine
