@@ -17,11 +17,11 @@ services:
       - POSTGRESQL_HOST=postgres
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.chirpstack-application-server.entrypoints=http"
+      - "traefik.http.routers.chirpstack-application-server.entrypoints=web"
       - "traefik.http.routers.chirpstack-application-server.rule=Host(`chirpstack.uat.ding.hu`)"
-      - "traefik.http.middlewares.chirpstack-application-server-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.chirpstack-application-server.middlewares=chirpstack-application-server-https-redirect"
-      - "traefik.http.routers.chirpstack-application-server-secure.entrypoints=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.chirpstack-application-server.middlewares=chirpstackredirect-to-https"
+      - "traefik.http.routers.chirpstack-application-server-secure.entrypoints=websecure"
       - "traefik.http.routers.chirpstack-application-server-secure.rule=Host(`chirpstack.uat.ding.hu`)"
       - "traefik.http.routers.chirpstack-application-server-secure.tls=true"
       - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=http"
@@ -51,11 +51,11 @@ services:
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.chirpstack-rest-api.entrypoints=http"
+      - "traefik.http.routers.chirpstack-rest-api.entrypoints=web"
       - "traefik.http.routers.chirpstack-rest-api.rule=Host(`chirpstack-api.uat.ding.hu`)"
-      - "traefik.http.middlewares.chirpstack-rest-api-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.chirpstack-rest-api.middlewares=chirpstack-rest-api-https-redirect"
-      - "traefik.http.routers.chirpstack-rest-api-secure.entrypoints=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.chirpstack-rest-api.middlewares=redirect-to-https"
+      - "traefik.http.routers.chirpstack-rest-api-secure.entrypoints=websecure"
       - "traefik.http.routers.chirpstack-rest-api-secure.rule=Host(`chirpstack-api.uat.ding.hu`)"
       - "traefik.http.routers.chirpstack-rest-api-secure.tls=true"
       - "traefik.http.routers.chirpstack-rest-api-secure.tls.certresolver=http"
