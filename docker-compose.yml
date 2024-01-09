@@ -15,8 +15,6 @@ services:
       - MQTT_BROKER_HOST=mosquitto
       - REDIS_HOST=redis
       - POSTGRESQL_HOST=postgres
-    ports:
-      - 8080:8080
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chirpstack-application-server.entrypoints=http"
@@ -51,8 +49,6 @@ services:
     image: chirpstack/chirpstack-rest-api:4
     restart: unless-stopped
     command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
-    ports:
-      - 8090:8090
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chirpstack-rest-api.entrypoints=http"
@@ -107,6 +103,7 @@ volumes:
 
 networks:
   gateway-network:
+    name: gateway-network
     external: true
   chirpstack-network:
     
