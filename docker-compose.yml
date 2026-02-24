@@ -34,7 +34,7 @@ services:
         - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-application-server-secure.service=chirpstack-application-server"
         - "traefik.http.services.chirpstack-application-server.loadbalancer.server.port=8080"
-        - "traefik.docker.network=gateway-network"
+        - "traefik.swarm.network=gateway-network"
 
 
   chirpstack-gateway-bridge:
@@ -69,7 +69,7 @@ services:
         - "traefik.http.routers.chirpstack-rest-api-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-rest-api-secure.service=chirpstack-rest-api"
         - "traefik.http.services.chirpstack-rest-api.loadbalancer.server.port=8090"
-        - "traefik.docker.network=gateway-network"
+        - "traefik.swarm.network=gateway-network"
     depends_on:
       - chirpstack
     networks:
