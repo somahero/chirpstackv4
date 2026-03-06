@@ -25,11 +25,11 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.chirpstack-application-server.entrypoints=web"
-        - "traefik.http.routers.chirpstack-application-server.rule=Host(`chirpstack.uat.ding.hu`)"
+        - "traefik.http.routers.chirpstack-application-server.rule=Host(`chirpstack.ding.hu`)"
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
         - "traefik.http.routers.chirpstack-application-server.middlewares=redirect-to-https"
         - "traefik.http.routers.chirpstack-application-server-secure.entrypoints=websecure"
-        - "traefik.http.routers.chirpstack-application-server-secure.rule=Host(`chirpstack.uat.ding.hu`)"
+        - "traefik.http.routers.chirpstack-application-server-secure.rule=Host(`chirpstack.ding.hu`)"
         - "traefik.http.routers.chirpstack-application-server-secure.tls=true"
         - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-application-server-secure.service=chirpstack-application-server"
@@ -60,11 +60,11 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.chirpstack-rest-api.entrypoints=web"
-        - "traefik.http.routers.chirpstack-rest-api.rule=Host(`chirpstack-api.uat.ding.hu`)"
+        - "traefik.http.routers.chirpstack-rest-api.rule=Host(`chirpstack-api.ding.hu`)"
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
         - "traefik.http.routers.chirpstack-rest-api.middlewares=redirect-to-https"
         - "traefik.http.routers.chirpstack-rest-api-secure.entrypoints=websecure"
-        - "traefik.http.routers.chirpstack-rest-api-secure.rule=Host(`chirpstack-api.uat.ding.hu`)"
+        - "traefik.http.routers.chirpstack-rest-api-secure.rule=Host(`chirpstack-api.ding.hu`)"
         - "traefik.http.routers.chirpstack-rest-api-secure.tls=true"
         - "traefik.http.routers.chirpstack-rest-api-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-rest-api-secure.service=chirpstack-rest-api"
@@ -79,7 +79,7 @@ services:
   postgres:
     image: postgres:14-alpine
     volumes:
-      #- ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=root
