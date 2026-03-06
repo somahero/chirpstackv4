@@ -34,7 +34,7 @@ services:
         - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-application-server-secure.service=chirpstack-application-server"
         - "traefik.http.services.chirpstack-application-server.loadbalancer.server.port=8080"
-        - "traefik.docker.network=gedge"
+        - "traefik.docker.network=edge"
 
 
   chirpstack-gateway-bridge:
@@ -79,7 +79,7 @@ services:
   postgres:
     image: postgres:14-alpine
     volumes:
-      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      #- ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=root
