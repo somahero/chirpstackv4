@@ -15,7 +15,7 @@ services:
       - REDIS_HOST=redis
       - POSTGRESQL_HOST=postgres
     networks:
-      - gateway-network
+      - edge
       - chirpstack-network
     deploy:
       replicas: 1
@@ -34,7 +34,7 @@ services:
         - "traefik.http.routers.chirpstack-application-server-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-application-server-secure.service=chirpstack-application-server"
         - "traefik.http.services.chirpstack-application-server.loadbalancer.server.port=8080"
-        - "traefik.swarm.network=gateway-network"
+        - "traefik.docker.network=gedge"
 
 
   chirpstack-gateway-bridge:
@@ -69,11 +69,11 @@ services:
         - "traefik.http.routers.chirpstack-rest-api-secure.tls.certresolver=le"
         - "traefik.http.routers.chirpstack-rest-api-secure.service=chirpstack-rest-api"
         - "traefik.http.services.chirpstack-rest-api.loadbalancer.server.port=8090"
-        - "traefik.swarm.network=gateway-network"
+        - "traefik.docker.network=edge"
     depends_on:
       - chirpstack
     networks:
-      - gateway-network
+      - edge
       - chirpstack-network
 
   postgres:
@@ -106,7 +106,7 @@ volumes:
   chirpstack-redis:
 
 networks:
-  gateway-network:
+  edge:
     external: true
   chirpstack-network:
     
